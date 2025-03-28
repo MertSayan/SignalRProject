@@ -17,6 +17,7 @@ namespace SignalRApi
 
             builder.Services.AddScoped<SignalRContext>();
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            builder.Services.AddScoped<IProductRepository,ProductRepository>();
 
             builder.Services.AddSaveApplicationService(builder.Configuration);
 

@@ -9,5 +9,6 @@ namespace Application.Interfaces
 {
     public interface IProductRepository
     {
+        Task<List<Product>> GetAllProductWithCategories();
     }
 }

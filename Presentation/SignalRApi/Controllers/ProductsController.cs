@@ -30,6 +30,12 @@ namespace SignalRApi.Controllers
             var value = await _mediator.Send(new GetByIdProductQuery(id));
             return Ok(value);
         }
+        [HttpGet("GetProductWithCategoryName")]
+        public async Task<IActionResult> GetProductWithCategoryName()
+        {
+            var value = await _mediator.Send(new GetProductWithCategoryNameQuery());
+            return Ok(value);
+        }
         [HttpPost]
         public async Task<IActionResult> CreateProduct(CreateProductCommand command)
         {

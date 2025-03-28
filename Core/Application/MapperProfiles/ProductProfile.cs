@@ -14,6 +14,10 @@ namespace Application.MapperProfiles
             CreateMap<Product, GetProductQueryResult>().ReverseMap();
             CreateMap<Product, GetByIdProductQueryResult>().ReverseMap();
 
+            CreateMap<Product, GetProductWithCategoryNameQueryResult>()
+            .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.CategoryName))
+            .ReverseMap();
+
         }
     }
 }
