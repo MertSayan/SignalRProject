@@ -1,0 +1,56 @@
+﻿@model List<ResultBookingDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+<div class="content">
+	<div class="container-fluid">
+		<h4 class="page-title">Rezervasyon İşlemleri</h4>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-header">
+						<div class="card-title">Rezervasyon Listesi</div>
+					</div>
+					<div class="card-body">
+						<div class="card-sub">
+							Rezervasyon İle İlgili işlemleri aşağıdan yapabilirsiniz
+						</div>
+						<table class="table mt-3">
+							<thead>
+								<tr>
+									<th scope="col">İsim</th>
+									<th scope="col">Telefon Numarası</th>
+									<th scope="col">Email</th>
+									<th scope="col">Kaç Kişilik</th>
+									<th scope="col">Tarih</th>
+									<th scope="col">Sil</th>
+									<th scope="col">Güncelle</th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach (var item in Model)
+								{
+									<tr>
+										<td>@item.Name</td>
+										<td>@item.Phone</td>
+										<td>@item.Mail</td>
+										<td>@item.PersonCount</td>
+										<td>@item.Date</td>
+										<td><a href="/Admin/Booking/DeleteBooking/@item.BookingId" class="btn btn-outline-danger">Sil</a></td>
+										<td><a href="/Admin/Booking/UpdateBooking/@item.BookingId" class="btn btn-outline-success">Güncelle</a></td>
+									</tr>
+								}
+							</tbody>
+						</table>
+						<a href="/Admin/Booking/CreateBooking" class="btn btn-outline-primary"> Yeni Rezevasyon Girişi</a>
+					</div>
+				</div>
+
+
+			</div>
+
+		</div>
+	</div>
+</div>
+

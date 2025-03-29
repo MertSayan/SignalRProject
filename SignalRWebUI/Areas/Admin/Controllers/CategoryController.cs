@@ -67,7 +67,7 @@ namespace SignalRWebUI.Areas.Admin.Controllers
 		public async Task<IActionResult> UpdateCategory(int id)
 		{
 			var client = _httpClientFactory.CreateClient();
-			var responseMessage = await client.GetAsync($"https://localhost:7155/api/Products/ById?id={id}");
+			var responseMessage = await client.GetAsync($"https://localhost:7155/api/Categories/ById?id={id}");
 			if (responseMessage.IsSuccessStatusCode)
 			{
 				var jsonData = await responseMessage.Content.ReadAsStringAsync();
@@ -83,7 +83,7 @@ namespace SignalRWebUI.Areas.Admin.Controllers
 			var client = _httpClientFactory.CreateClient();
 			var jsonData = JsonConvert.SerializeObject(updateCategoryDto);
 			StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-			var responseMessage = await client.PutAsync("https://localhost:7155/api/Products", content);
+			var responseMessage = await client.PutAsync("https://localhost:7155/api/Categories", content);
 			if (responseMessage.IsSuccessStatusCode)
 			{
 				return RedirectToAction("Index", "Category", new { area = "Admin" });
