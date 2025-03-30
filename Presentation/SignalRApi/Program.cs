@@ -4,6 +4,7 @@ using Application.Servicess;
 using AutoMapper;
 using Persistence.Context;
 using Persistence.Repositories;
+using SignalRApi.Hubs;
 
 namespace SignalRApi
 {
@@ -12,6 +13,18 @@ namespace SignalRApi
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddCors(opt =>
+            {
+                opt.AddPolicy("CorsPolicy", builder =>
+                {
+                    builder.AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .SetIsOriginAllowed((host) => true)
+                    .AllowCredentials();
+                });
+            });
+            builder.Services.AddSignalR();
 
             // Add services to the container.
 
@@ -37,13 +50,15 @@ namespace SignalRApi
                 app.UseSwaggerUI();
             }
 
+            app.UseCors("CorsPolicy");
+
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
 
 
             app.MapControllers();
-
+            app.MapHub<SignalRHub>("/signalrhub");
             app.Run();
         }
     }
