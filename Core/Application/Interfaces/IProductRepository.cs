@@ -1,14 +1,15 @@
 ﻿using Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Interfaces
 {
     public interface IProductRepository
     {
         Task<List<Product>> GetAllProductWithCategories();
+        Task<int> GetProductCount();
+        Task<int> GetProductCountByCategoryName(string categoryName);
+        Task<decimal> GetProductPriceAvg();
+        Task<string> GetProductByMaxPrice();
+        Task<string> GetProductByMinPrice();
+        Task<decimal> GetProductPriceAvgByCategoryName(string categoryName);
     }
 }

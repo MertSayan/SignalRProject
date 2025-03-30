@@ -14,6 +14,7 @@ namespace Application.MapperProfiles
             CreateMap<Category, GetCategoryQueryResult>().ReverseMap();
             CreateMap<Category, GetByIdCategoryQueryResult>().ReverseMap();
 
+
         }
     }
 }

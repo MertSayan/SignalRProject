@@ -36,6 +36,42 @@ namespace SignalRApi.Controllers
             var value = await _mediator.Send(new GetProductWithCategoryNameQuery());
             return Ok(value);
         }
+        [HttpGet("GetProductCount")]
+        public async Task<IActionResult> GetProductCount()
+        {
+            var value = await _mediator.Send(new GetProductCountQuery());
+            return Ok(value);
+        }
+        [HttpGet("GetProductCountByCategoryName")]
+        public async Task<IActionResult> GetProductCountByCategoryName(string categoryName)
+        {
+            var value = await _mediator.Send(new GetProductCountByCategoryNameQuery(categoryName));
+            return Ok(value);
+        }
+        [HttpGet("GetProductPriceAvg")]
+        public async Task<IActionResult> GetProductPriceAvg()
+        {
+            var value = await _mediator.Send(new GetProductPriceAvgQuery());
+            return Ok(value);
+        }
+        [HttpGet("GetProducByMinPrice")]
+        public async Task<IActionResult> GetProducByMinPrice()
+        {
+            var value = await _mediator.Send(new GetProductByMinPriceQuery());
+            return Ok(value);
+        }
+        [HttpGet("GetProducByMaxPrice")]
+        public async Task<IActionResult> GetProducByMaxPrice()
+        {
+            var value = await _mediator.Send(new GetProductByMaxPriceQuery());
+            return Ok(value);
+        }
+        [HttpGet("GetProductPriceAvgByCategoryName")]
+        public async Task<IActionResult> GetProductPriceAvgByCategoryName(string categoryName)
+        {
+            var value = await _mediator.Send(new GetProductPriceAvgByCategoryNameQuery(categoryName));
+            return Ok(value);
+        }
         [HttpPost]
         public async Task<IActionResult> CreateProduct(CreateProductCommand command)
         {

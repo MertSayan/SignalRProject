@@ -1,16 +1,31 @@
 ﻿using Application.Interfaces;
-using Domain;
+using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Persistence.Repositories
 {
     public class CategoryRepository : ICategoryRepository
     {
-        
+        private readonly SignalRContext _context;
+
+        public CategoryRepository(SignalRContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<int> GetActiveCategoryCount()
+        {
+            return await _context.Categories.Where(x=>x.CategoryStatus==true).CountAsync();
+        }
+
+        public async Task<int> GetCategoryCount()
+        {
+            return await _context.Categories.CountAsync();
+        }
+
+        public async Task<int> GetPassiveCategoryCount()
+        {
+            return await _context.Categories.Where(x => x.CategoryStatus == false).CountAsync();
+        }
     }
 }

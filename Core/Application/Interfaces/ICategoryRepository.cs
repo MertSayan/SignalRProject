@@ -9,5 +9,8 @@ namespace Application.Interfaces
 {
     public interface ICategoryRepository
     {
+        Task<int> GetCategoryCount();
+        Task<int> GetActiveCategoryCount();
+        Task<int> GetPassiveCategoryCount();
     }
 }

@@ -30,6 +30,24 @@ namespace SignalRApi.Controllers
             var value = await _mediator.Send(new GetByIdCategoryQuery(id));
             return Ok(value);
         }
+        [HttpGet("GetCategoryCount")]
+        public async Task<IActionResult> GetCategoryCount()
+        {
+            var value = await _mediator.Send(new GetCategoryCountQuery());
+            return Ok(value);
+        }
+        [HttpGet("GetActiveCategoryCount")]
+        public async Task<IActionResult> GetActiveCategoryCount()
+        {
+            var value = await _mediator.Send(new GetActiveCategoryCountQuery());
+            return Ok(value);
+        }
+        [HttpGet("GetPassiveCategoryCount")]
+        public async Task<IActionResult> GetPassiveCategoryCount()
+        {
+            var value = await _mediator.Send(new GetPassiveCategoryCountQuery());
+            return Ok(value);
+        }
         [HttpPost]
         public async Task<IActionResult> CreateCategory(CreateCategoryCommand command)
         {
