@@ -17,4 +17,10 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Mediatr\MoneyCases\Commands\" />
+    <Folder Include="Features\Mediatr\MoneyCases\Handlers\Write\" />
+    <Folder Include="Features\Mediatr\Tables\Handlers\Write\" />
+  </ItemGroup>
+
 </Project>

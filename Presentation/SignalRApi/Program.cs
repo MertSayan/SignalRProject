@@ -1,7 +1,6 @@
 
 using Application.Interfaces;
 using Application.Servicess;
-using AutoMapper;
 using Persistence.Context;
 using Persistence.Repositories;
 using SignalRApi.Hubs;
@@ -29,11 +28,13 @@ namespace SignalRApi
             // Add services to the container.
 
             builder.Services.AddScoped<SignalRContext>();
-            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>)); 
             builder.Services.AddScoped<IProductRepository,ProductRepository>();
             builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
             builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+            builder.Services.AddScoped<IMoneyCaseRepository, MoneyCaseRepository>();
+            builder.Services.AddScoped<ITableRepository, TableRepository>();
 
             builder.Services.AddSaveApplicationService(builder.Configuration);
 

@@ -25,7 +25,13 @@ namespace Persistence.Repositories
 
         public async Task<decimal> GetLastOrderPrice()
         {
-            return await _context.Orders.OrderByDescending(x=>x.Date).Take(1).Select(y=>y.TotalPrice).FirstOrDefaultAsync();
+            return await _context.Orders.OrderByDescending(x=>x.OrderId).Take(1).Select(y=>y.TotalPrice).FirstOrDefaultAsync();
+        }
+
+        public async Task<decimal> GetTodayTotalPrice()
+        {
+            //return await _context.Orders.Where(x => x.Date == DateTime.Parse(DateTime.Now.ToShortDateString())).SumAsync(y => y.TotalPrice);
+            return 0;
         }
     }
 }

@@ -11,5 +11,6 @@ namespace Application.Interfaces
         Task<int> GetTotalOrderCount();
         Task<int> GetActiveOrderCount();
         Task<decimal> GetLastOrderPrice();
+        Task<decimal> GetTodayTotalPrice();
     }
 }

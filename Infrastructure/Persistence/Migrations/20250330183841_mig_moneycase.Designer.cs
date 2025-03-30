@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence.Context;
 
@@ -11,9 +12,11 @@ using Persistence.Context;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(SignalRContext))]
-    partial class SignalRContextModelSnapshot : ModelSnapshot
+    [Migration("20250330183841_mig_moneycase")]
+    partial class mig_moneycase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -217,12 +220,12 @@ namespace Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("OrderDate")
-                        .HasColumnType("Date");
 
                     b.Property<string>("TableNumber")
                         .IsRequired()
@@ -327,26 +330,6 @@ namespace Persistence.Migrations
                     b.HasKey("SocialMediaId");
 
                     b.ToTable("SocialMedias");
-                });
-
-            modelBuilder.Entity("Domain.Table", b =>
-                {
-                    b.Property<int>("TableId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TableId"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
-                    b.HasKey("TableId");
-
-                    b.ToTable("MenuTables");
                 });
 
             modelBuilder.Entity("Domain.Testimonial", b =>
