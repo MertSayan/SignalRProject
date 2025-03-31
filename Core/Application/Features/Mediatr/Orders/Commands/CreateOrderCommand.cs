@@ -9,7 +9,6 @@ namespace Application.Features.Mediatr.Orders.Commands
 {
     public class CreateOrderCommand:IRequest
     {
-        public int OrderId { get; set; }
         public string TableNumber { get; set; }
         public string Description { get; set; }
         public DateTime Date { get; set; }
