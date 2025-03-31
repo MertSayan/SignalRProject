@@ -110,12 +110,24 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("FooterTitle")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Mail")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OpenDays")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OpenDaysDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OpenHours")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Phone")
@@ -302,6 +314,43 @@ namespace Persistence.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Domain.Slider", b =>
+                {
+                    b.Property<int>("SliderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SliderId"));
+
+                    b.Property<string>("Description1")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description2")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description3")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title1")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title2")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title3")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("SliderId");
+
+                    b.ToTable("Sliders");
                 });
 
             modelBuilder.Entity("Domain.SocialMedia", b =>
