@@ -35,6 +35,7 @@ namespace SignalRApi
             builder.Services.AddScoped<IOrderRepository, OrderRepository>();
             builder.Services.AddScoped<IMoneyCaseRepository, MoneyCaseRepository>();
             builder.Services.AddScoped<ITableRepository, TableRepository>();
+            builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 
             builder.Services.AddSaveApplicationService(builder.Configuration);
 

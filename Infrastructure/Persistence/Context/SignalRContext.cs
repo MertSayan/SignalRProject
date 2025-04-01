@@ -23,6 +23,7 @@ namespace Persistence.Context
         public DbSet<MoneyCase> MoneyCases{ get; set; } 
         public DbSet<Table> MenuTables { get; set; }
         public DbSet<Slider> Sliders{ get; set; }
+        public DbSet<Basket> Baskets { get; set; }
        
     }
 }
