@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Domain;
 using Microsoft.AspNetCore.SignalR;
 using Persistence.Context;
 
@@ -11,15 +12,17 @@ namespace SignalRApi.Hubs
 		private readonly IOrderRepository _orderRepository;
 		private readonly IMoneyCaseRepository _moneyCaseRepository;
 		private readonly ITableRepository _tableRepository;
+		private readonly IGenericRepository<Booking> _bookingRepository;
 
 
-        public SignalRHub(ICategoryRepository categoryRepository, IProductRepository productRepository, IOrderRepository orderRepository, IMoneyCaseRepository moneyCaseRepository, ITableRepository tableRepository)
+        public SignalRHub(ICategoryRepository categoryRepository, IProductRepository productRepository, IOrderRepository orderRepository, IMoneyCaseRepository moneyCaseRepository, ITableRepository tableRepository, IGenericRepository<Booking> bookingRepository)
         {
             _categoryRepository = categoryRepository;
             _productRepository = productRepository;
             _orderRepository = orderRepository;
             _moneyCaseRepository = moneyCaseRepository;
             _tableRepository = tableRepository;
+            _bookingRepository = bookingRepository;
         }
 
 
@@ -80,5 +83,13 @@ namespace SignalRApi.Hubs
             };
             await Clients.All.SendAsync("ReceiveProgressBar", dashboardCount);
         }
+		
+		public async Task GetBookingList()
+		{
+			var value=await _bookingRepository.GetListAllAsync();
+
+
+			await Clients.All.SendAsync("ReceiveBookingList",value);
+		}
     }
 }
