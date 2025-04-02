@@ -1,6 +1,6 @@
 namespace SignalRWebUI
 {
-    public class Program
+	public class Program
     {
         public static void Main(string[] args)
         {
@@ -8,7 +8,6 @@ namespace SignalRWebUI
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-
 
 			builder.Services.AddHttpClient();
 

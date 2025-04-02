@@ -1,6 +1,7 @@
 
 using Application.Interfaces;
 using Application.Servicess;
+using Domain;
 using Persistence.Context;
 using Persistence.Repositories;
 using SignalRApi.Hubs;
@@ -37,6 +38,8 @@ namespace SignalRApi
             builder.Services.AddScoped<ITableRepository, TableRepository>();
             builder.Services.AddScoped<IBasketRepository, BasketRepository>();
             builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+
+            builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<SignalRContext>();
 
             builder.Services.AddSaveApplicationService(builder.Configuration);
 
