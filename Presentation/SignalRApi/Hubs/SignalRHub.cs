@@ -1,5 +1,7 @@
-﻿using Application.Interfaces;
+﻿using Application.Features.Mediatr.Notifications.Queries;
+using Application.Interfaces;
 using Domain;
+using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using Persistence.Context;
 
@@ -13,20 +15,24 @@ namespace SignalRApi.Hubs
 		private readonly IMoneyCaseRepository _moneyCaseRepository;
 		private readonly ITableRepository _tableRepository;
 		private readonly IGenericRepository<Booking> _bookingRepository;
+		private readonly IMediator _mediator;
+		private readonly INotificationRepository _notificationRepository;
 
 
-        public SignalRHub(ICategoryRepository categoryRepository, IProductRepository productRepository, IOrderRepository orderRepository, IMoneyCaseRepository moneyCaseRepository, ITableRepository tableRepository, IGenericRepository<Booking> bookingRepository)
-        {
-            _categoryRepository = categoryRepository;
-            _productRepository = productRepository;
-            _orderRepository = orderRepository;
-            _moneyCaseRepository = moneyCaseRepository;
-            _tableRepository = tableRepository;
-            _bookingRepository = bookingRepository;
-        }
+		public SignalRHub(ICategoryRepository categoryRepository, IProductRepository productRepository, IOrderRepository orderRepository, IMoneyCaseRepository moneyCaseRepository, ITableRepository tableRepository, IGenericRepository<Booking> bookingRepository, IMediator mediator, INotificationRepository notificationRepository)
+		{
+			_categoryRepository = categoryRepository;
+			_productRepository = productRepository;
+			_orderRepository = orderRepository;
+			_moneyCaseRepository = moneyCaseRepository;
+			_tableRepository = tableRepository;
+			_bookingRepository = bookingRepository;
+			_mediator = mediator;
+			_notificationRepository = notificationRepository;
+		}
 
 
-        public async Task TakeDashboardCount()
+		public async Task TakeDashboardCount()
 		{
 			var categoryCount = await _categoryRepository.GetCategoryCount();
 			var productCount = await _productRepository.GetProductCount();
@@ -90,6 +96,22 @@ namespace SignalRApi.Hubs
 
 
 			await Clients.All.SendAsync("ReceiveBookingList",value);
+		}
+
+		public async Task SendNotification()
+		{
+			
+
+			var notReadNotificationCount = await _notificationRepository.GetNotificationCountByNotRead();
+			var notificationListNotRead = await _notificationRepository.GetAllNotificationByNotRead();
+
+			var notifications = new
+			{
+				NotReadNotificationCount=notReadNotificationCount,
+				NotificationListNotRead=notificationListNotRead,
+			};
+
+			await Clients.All.SendAsync("ReceiveNotification", notifications);
 		}
     }
 }
