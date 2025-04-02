@@ -1,14 +1,13 @@
-﻿using MediatR;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Mediatr.Tables.Commands
+namespace SignalRDto.TableDtos
 {
-    public class UpdateTableCommand:IRequest
-    {
+	public class ResultTableDto
+	{
 		public int TableId { get; set; }
 		public string Name { get; set; }
 		public bool Status { get; set; }

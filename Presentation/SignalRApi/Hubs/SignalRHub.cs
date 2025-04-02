@@ -17,22 +17,25 @@ namespace SignalRApi.Hubs
 		private readonly IGenericRepository<Booking> _bookingRepository;
 		private readonly IMediator _mediator;
 		private readonly INotificationRepository _notificationRepository;
+		private readonly IGenericRepository<Table> _genericTableRepository;
 
 
-		public SignalRHub(ICategoryRepository categoryRepository, IProductRepository productRepository, IOrderRepository orderRepository, IMoneyCaseRepository moneyCaseRepository, ITableRepository tableRepository, IGenericRepository<Booking> bookingRepository, IMediator mediator, INotificationRepository notificationRepository)
-		{
-			_categoryRepository = categoryRepository;
-			_productRepository = productRepository;
-			_orderRepository = orderRepository;
-			_moneyCaseRepository = moneyCaseRepository;
-			_tableRepository = tableRepository;
-			_bookingRepository = bookingRepository;
-			_mediator = mediator;
-			_notificationRepository = notificationRepository;
-		}
+
+        public SignalRHub(ICategoryRepository categoryRepository, IProductRepository productRepository, IOrderRepository orderRepository, IMoneyCaseRepository moneyCaseRepository, ITableRepository tableRepository, IGenericRepository<Booking> bookingRepository, IMediator mediator, INotificationRepository notificationRepository, IGenericRepository<Table> genericTableRepository)
+        {
+            _categoryRepository = categoryRepository;
+            _productRepository = productRepository;
+            _orderRepository = orderRepository;
+            _moneyCaseRepository = moneyCaseRepository;
+            _tableRepository = tableRepository;
+            _bookingRepository = bookingRepository;
+            _mediator = mediator;
+            _notificationRepository = notificationRepository;
+            _genericTableRepository = genericTableRepository;
+        }
 
 
-		public async Task TakeDashboardCount()
+        public async Task TakeDashboardCount()
 		{
 			var categoryCount = await _categoryRepository.GetCategoryCount();
 			var productCount = await _productRepository.GetProductCount();
@@ -112,6 +115,12 @@ namespace SignalRApi.Hubs
 			};
 
 			await Clients.All.SendAsync("ReceiveNotification", notifications);
+		}
+
+		public async Task GetMenuTableStatus()
+		{
+			var value = await _genericTableRepository.GetListAllAsync();
+			await Clients.All.SendAsync("ReceiveMenuTableStatus", value);
 		}
     }
 }
