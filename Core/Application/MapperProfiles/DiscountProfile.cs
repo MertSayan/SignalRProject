@@ -13,6 +13,7 @@ namespace Application.MapperProfiles
             CreateMap<Discount, UpdateDiscountCommand>().ReverseMap();
             CreateMap<Discount, GetDiscountQueryResult>().ReverseMap();
             CreateMap<Discount, GetByIdDiscountQueryResult>().ReverseMap();
+            CreateMap<Discount, GetDiscountListByStatusTrueQueryResult>().ReverseMap();
 
         }
     }

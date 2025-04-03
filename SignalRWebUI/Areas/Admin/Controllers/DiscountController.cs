@@ -40,6 +40,7 @@ namespace SignalRWebUI.Areas.Admin.Controllers
 		[Route("CreateDiscount")]
 		public async Task<IActionResult> CreateDiscount(CreateDiscountDto createDiscountDto)
 		{
+			//createDiscountDto.Status = false;
 			var client = _httpClientFactory.CreateClient();
 			var jsonData = JsonConvert.SerializeObject(createDiscountDto);
 			StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
@@ -90,5 +91,22 @@ namespace SignalRWebUI.Areas.Admin.Controllers
 			}
 			return View();
 		}
-	}
+
+        [Route("ChangeDiscountStatusToTrue/{id}")]
+        public async Task<IActionResult> ChangeDiscountStatusToTrue(int id)
+        {
+            var client = _httpClientFactory.CreateClient();
+            await client.GetAsync("https://localhost:7155/api/Discounts/ChangeDiscountStatusToTrue?id="+id);
+			return RedirectToAction("Index", "Discount", new { area = "Admin" });
+        }
+
+        [Route("ChangeDiscountStatusToFalse/{id}")]
+        public async Task<IActionResult> ChangeDiscountStatusToFalse(int id)
+        {
+            var client = _httpClientFactory.CreateClient();
+			await client.GetAsync("https://localhost:7155/api/Discounts/ChangeDiscountStatusToFalse?id="+id);
+
+            return RedirectToAction("Index", "Discount", new { area = "Admin" });
+        }
+    }
 }

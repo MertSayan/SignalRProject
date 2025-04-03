@@ -30,7 +30,19 @@ namespace SignalRApi.Controllers
             var value = await _mediator.Send(new GetByIdBookingQuery(id));
             return Ok(value);
         }
-        [HttpPost]
+		[HttpGet("UpdateBookingStatusApproved")]
+		public async Task<IActionResult> UpdateBookingStatusApproved(int id)
+		{
+			await _mediator.Send(new UpdateBookingStatusApprovedCommand(id));
+			return Ok("Rezervasyon Onaylandı");
+		}
+		[HttpGet("UpdateBookingStatusCancelled")]
+		public async Task<IActionResult> UpdateBookingStatusCancelled(int id)
+		{
+			await _mediator.Send(new UpdateBookingStatusCancelledCommand(id));
+			return Ok("Rezervasyon İptal Edildi");
+		}
+		[HttpPost]
         public async Task<IActionResult> CreateBooking(CreateBookingCommand command)
         {
             await _mediator.Send(command);

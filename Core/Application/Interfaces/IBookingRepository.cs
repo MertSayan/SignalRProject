@@ -9,5 +9,7 @@ namespace Application.Interfaces
 {
     public interface IBookingRepository
     {
+        Task BookingStatusApproved(int id);
+        Task BookingStatusCancelled(int id);
     }
 }

@@ -1,7 +1,8 @@
 ﻿@model List<ResultDiscountDto>
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+	ViewData["Title"] = "Index";
+	Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+	int count = 0;
 }
 
 <div class="content">
@@ -15,7 +16,7 @@
 					</div>
 					<div class="card-body">
 						<div class="card-sub">
-							Günün İndirimli ürünleri aşağıda yer almaktadır. Tema Bütünlüğü için 2 adet indirimli ürün seçin.
+							Günün İndirimli ürünleri aşağıda yer almaktadır. Tema Bütünlüğü için 2 adet indirimli ürünü açık bırakın.
 						</div>
 						<table class="table mt-3">
 							<thead>
@@ -23,19 +24,26 @@
 									<th scope="col">#</th>
 									<th scope="col">Başlık</th>
 									<th scope="col">İndirim Oranı</th>
+									<th scope="col">Durumu</th>
 									<th scope="col">Sil</th>
 									<th scope="col">Güncelle</th>
+									<th scope="col">Gizle</th>
+									<th scope="col">Aç</th>
 								</tr>
 							</thead>
 							<tbody>
 								@foreach (var item in Model)
 								{
+									count++;
 									<tr>
-										<td>@item.DiscountId</td>
+										<td>@count</td>
 										<td>@item.Title</td>
 										<td>@item.Amount</td>
+										<td>@item.Status</td>
 										<td><a href="/Admin/Discount/DeleteDiscount/@item.DiscountId" class="btn btn-outline-danger">Sil</a></td>
 										<td><a href="/Admin/Discount/UpdateDiscount/@item.DiscountId" class="btn btn-outline-success">Güncelle</a></td>
+										<td><a href="/Admin/Discount/ChangeDiscountStatusToFalse/@item.DiscountId" class="btn btn-outline-primary">Gizle</a></td>
+										<td><a href="/Admin/Discount/ChangeDiscountStatusToTrue/@item.DiscountId" class="btn btn-outline-dark">Aç</a></td>
 									</tr>
 								}
 							</tbody>

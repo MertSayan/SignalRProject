@@ -1,4 +1,5 @@
-﻿@model List<ResultBookingDto>
+﻿
+@* @model List<ResultBookingDto>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
@@ -37,19 +38,23 @@
 							<th scope="col">Rezervasyon Durumu</th>
 							<th scope="col">Sil</th>
 							<th scope="col">Güncelle</th>
+							<th scope="col">Onayla</th>
+							<th scope="col">İptal Et</th>
 						</tr>
 					</thead>
 					<tbody>`;
 
 					$.each(value, (index, item) => {
 						tablehtml += `<tr>
-						<td>${item.bookingId}</td>
+						<th>${index+1}</th>
 						<td>${item.name}</td>
 						<td>${item.phone}</td>
 						<td>${item.personCount}</td>
-						<td>Rezervasyon Alındı</td>
+						<td>${item.description}</td>
 						<td><a href="/Admin/Booking/DeleteBooking/${item.bookingId}" class="btn btn-outline-danger">Sil</a></td>
 						<td><a href="/Admin/Booking/UpdateBooking/${item.bookingId}" class="btn btn-outline-success">Güncelle</a></td>
+						<td><a href="/Admin/Booking/BookingStatusApproved/${item.bookingId}" class="btn btn-outline-info">Onayla</a></td>
+						<td><a href="/Admin/Booking/BookingStatusCancelled/${item.bookingId}" class="btn btn-outline-dark">İptal Et</a></td>
 					</tr>`;
 					});
 
@@ -84,4 +89,99 @@
 		</div>
 	</div>
 </div>
+ *@
 
+
+
+
+
+@model List<ResultBookingDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<script src="~/lib/microsoft-signalr/signalr.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+
+<div class="content">
+    <div class="container-fluid">
+        <script type="text/javascript">
+            $(document).ready(() => {
+                var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:7155/SignalRHub").build();
+
+                $("#connstatus").text(connection.state);
+
+                connection.start().then(() => {
+                    $("#connstatus").text(connection.state);
+
+                    setInterval(() => {
+                        connection.invoke("GetBookingList");
+                    }, 1000);
+                }).catch((err) => { console.log(err); });
+
+                connection.on("ReceiveBookingList", (value) => {
+                    console.log(value);
+
+                    let tbodyHtml = "";
+
+                    $.each(value, (index, item) => {
+                        tbodyHtml += `<tr>
+                                        <th>${index + 1}</th>
+                                        <td>${item.name}</td>
+                                        <td>${item.phone}</td>
+                                        <td>${item.personCount}</td>
+                                        <td>${item.description}</td>
+                                        <td><a href="/Admin/Booking/DeleteBooking/${item.bookingId}" class="btn btn-outline-danger">Sil</a></td>
+                                        <td><a href="/Admin/Booking/UpdateBooking/${item.bookingId}" class="btn btn-outline-success">Güncelle</a></td>
+                                        <td><a href="/Admin/Booking/BookingStatusApproved/${item.bookingId}" class="btn btn-outline-info">Onayla</a></td>
+                                        <td><a href="/Admin/Booking/BookingStatusCancelled/${item.bookingId}" class="btn btn-outline-dark">İptal Et</a></td>
+                                    </tr>`;
+                    });
+
+                    $("#bookingList").html(tbodyHtml); // Sadece tbody güncelleniyor
+                });
+            });
+        </script>
+
+        <h4 class="page-title">Rezervasyon İşlemleri</h4>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Rezervasyon Listesi</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-sub">
+                            Rezervasyon İle İlgili işlemleri aşağıdan yapabilirsiniz
+                        </div>
+
+                        <!-- Tablonun Başlığı Sabit -->
+                        <table class="table mt-3">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Ad Soyad</th>
+                                    <th scope="col">Telefon</th>
+                                    <th scope="col">Kişi Sayısı</th>
+                                    <th scope="col">Rezervasyon Durumu</th>
+                                    <th scope="col">Sil</th>
+                                    <th scope="col">Güncelle</th>
+                                    <th scope="col">Onayla</th>
+                                    <th scope="col">İptal Et</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bookingList">
+                                <!-- SignalR'dan gelen veriler buraya eklenecek -->
+                            </tbody>
+                        </table>
+
+                        <a href="/Admin/Booking/CreateBooking" class="btn btn-outline-primary"> Yeni Rezevasyon Girişi</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

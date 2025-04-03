@@ -30,7 +30,26 @@ namespace SignalRApi.Controllers
             var value = await _mediator.Send(new GetByIdDiscountQuery(id));
             return Ok(value);
         }
-        [HttpPost]
+        [HttpGet("ChangeDiscountStatusToTrue")]
+        public async Task<IActionResult> ChangeDiscountStatusToTrue(int id)
+        {
+            await _mediator.Send(new ChangeDiscountStatusToTrueCommand(id));
+            return Ok("Gösterildi");
+        }
+        [HttpGet("ChangeDiscountStatusToFalse")]
+        public async Task<IActionResult> ChangeDiscountStatusToFalse(int id)
+        {
+            await _mediator.Send(new ChangeDiscountStatusToFalseCommand(id));
+            return Ok("Gizlendi");
+        }
+		[HttpGet("GetDiscountListByStatusTrue")]
+		public async Task<IActionResult> GetDiscountListByStatusTrue()
+		{
+			var values=await _mediator.Send(new GetDiscountListByStatusTrueQuery());
+			return Ok(values);
+		}
+		
+		[HttpPost]
         public async Task<IActionResult> CreateDiscount(CreateDiscountCommand command)
         {
             await _mediator.Send(command);

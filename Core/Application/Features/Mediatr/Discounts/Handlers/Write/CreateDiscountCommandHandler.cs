@@ -21,6 +21,7 @@ namespace Application.Features.Mediatr.Discounts.Handlers.Write
         {
 
             var value = _mapper.Map<Discount>(request);
+            value.Status = false;
             await _genericRepository.CreateAsync(value);
         }
     }

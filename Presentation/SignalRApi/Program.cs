@@ -38,6 +38,8 @@ namespace SignalRApi
             builder.Services.AddScoped<ITableRepository, TableRepository>();
             builder.Services.AddScoped<IBasketRepository, BasketRepository>();
             builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+            builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+            builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
 
             builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<SignalRContext>();
 
