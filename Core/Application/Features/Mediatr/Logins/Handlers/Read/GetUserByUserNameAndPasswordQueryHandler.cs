@@ -1,5 +1,6 @@
 ﻿using Application.Features.Mediatr.Logins.Queries;
 using Application.Features.Mediatr.Logins.Results;
+using Application.Interfaces;
 using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -8,41 +9,28 @@ namespace Application.Features.Mediatr.Logins.Handlers.Read
 {
 	public class GetUserByUserNameAndPasswordQueryHandler : IRequestHandler<GetUserByUserNameAndPasswordQuery, GetUserByUserNameAndPasswordQueryResult>
 	{
-		private readonly SignInManager<AppUser> _signInManager;
-		private readonly UserManager<AppUser> _userManager;
-		public GetUserByUserNameAndPasswordQueryHandler(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager)
+		private readonly IUserRepository _userRepository;
+
+		public GetUserByUserNameAndPasswordQueryHandler(IUserRepository userRepository)
 		{
-			_signInManager = signInManager;
-			_userManager = userManager;
+			_userRepository = userRepository;
 		}
+
 		public async Task<GetUserByUserNameAndPasswordQueryResult> Handle(GetUserByUserNameAndPasswordQuery request, CancellationToken cancellationToken)
 		{
-			var signInResult = await _signInManager.PasswordSignInAsync(request.UserName, request.Password, false, false);
-			//lockoutonfail ( son parametre yukarıdaki ) false yaptım bu, appnetusers tablosunda bir sütun var her yanlış
-			//şifre girdiğinde bir artıyor belli bir sayıya ulaşınca seni sistemden bir süre banlıyor 
-			//bu olmasın şimdilik diye false yaptım.
+			var user=await _userRepository.GetByFilterAsync(x=>x.UserName==request.UserName && x.Password==request.Password);
 
-			if (signInResult.Succeeded)
+			if (user != null)
 			{
-				var user = await _userManager.FindByNameAsync(request.UserName);
-				if (user == null)
-				{
-					return null; // Kullanıcı bulunamazsa null dönebiliriz.
-				}
-
 				return new GetUserByUserNameAndPasswordQueryResult
 				{
-					Mail=user.Email,
-					Name=user.Name,
-					Password=user.PasswordHash,
-					Surname=user.Surname,
-					Username = user.UserName
+					IsExist = true,
+					UserId = user.UserId,
+					RoleName = user.Role
 				};
 			}
-
-			return null; // Giriş başarısızsa null döndürüyoruz.
-						
-			
+			else
+				return null;
 		}
 	}
 }

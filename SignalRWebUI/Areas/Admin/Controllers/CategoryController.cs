@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SignalRDto.CategoryDtos;
 using System.Text;
 
 namespace SignalRWebUI.Areas.Admin.Controllers
 {
+
     [Area("Admin")]
 	[Route("Admin/Category")]  // 🟢 Tüm action'lar için temel route tanımı
 	public class CategoryController : Controller

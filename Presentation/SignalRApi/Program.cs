@@ -1,10 +1,14 @@
 
 using Application.Interfaces;
 using Application.Servicess;
+using Application.Tools;
 using Domain;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Persistence.Context;
 using Persistence.Repositories;
 using SignalRApi.Hubs;
+using System.Text;
 
 namespace SignalRApi
 {
@@ -14,7 +18,21 @@ namespace SignalRApi
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddCors(opt =>
+			builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
+			{
+				opt.RequireHttpsMetadata = false; //çok tavsiye edilen biþey deðil ama þimdilik güvenliði biraz yumuþattýk.
+				opt.TokenValidationParameters = new TokenValidationParameters
+				{
+					ValidAudience = JwtTokenDefaults.ValidAudience,
+					ValidIssuer = JwtTokenDefaults.ValidIssuer,
+					ClockSkew = TimeSpan.Zero,
+					IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtTokenDefaults.Key)),
+					ValidateLifetime = true,
+					ValidateIssuerSigningKey = true
+				};
+			});
+
+			builder.Services.AddCors(opt =>
             {
                 opt.AddPolicy("CorsPolicy", builder =>
                 {
@@ -29,9 +47,9 @@ namespace SignalRApi
             // Add services to the container.
 
             builder.Services.AddScoped<SignalRContext>();
-            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>)); 
-            builder.Services.AddScoped<IProductRepository,ProductRepository>();
-            builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
+            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            builder.Services.AddScoped<IProductRepository, ProductRepository>();
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
             builder.Services.AddScoped<IOrderRepository, OrderRepository>();
             builder.Services.AddScoped<IMoneyCaseRepository, MoneyCaseRepository>();
@@ -40,8 +58,13 @@ namespace SignalRApi
             builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
             builder.Services.AddScoped<IBookingRepository, BookingRepository>();
             builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+
+
 
             builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<SignalRContext>();
+
 
             builder.Services.AddSaveApplicationService(builder.Configuration);
 
@@ -50,7 +73,7 @@ namespace SignalRApi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-           
+
 
             var app = builder.Build();
 
@@ -64,7 +87,7 @@ namespace SignalRApi
             app.UseCors("CorsPolicy");
 
             app.UseHttpsRedirection();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

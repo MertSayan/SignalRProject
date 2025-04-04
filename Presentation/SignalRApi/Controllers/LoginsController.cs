@@ -1,10 +1,12 @@
-﻿using Application.Constants;
-using Application.Features.Mediatr.Logins.Commands;
-using Application.Features.Mediatr.Logins.Queries;
-using Application.Features.Mediatr.Registers.Commands;
+﻿using Application.Features.Mediatr.Logins.Commands;
 using MediatR;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Application.Constants;
+using Application.Tools;
+using Domain;
+using Application.Features.Mediatr.Logins.Queries;
 
 namespace SignalRApi.Controllers
 {
@@ -23,8 +25,14 @@ namespace SignalRApi.Controllers
 		public async Task<IActionResult> Index(GetUserByUserNameAndPasswordQuery query)
 		{
 			var user = await _mediator.Send(query);
-			return Ok(user);
+			if (user.IsExist)
+			{
+				return Created("", JwtTokenGenerator.GenerateToken(user));
+			}
+			else
+			{
+				return BadRequest(Messages<User>.EntityCantMathes);
+			}
 		}
-
 	}
 }
