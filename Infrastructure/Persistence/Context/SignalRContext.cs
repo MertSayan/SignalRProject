@@ -8,7 +8,8 @@ namespace Persistence.Context
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=.;Database=SignalRProject;User=TestUser;Password=321321;TrustServerCertificate=true");
+            optionsBuilder.UseSqlServer("Server=;Database=;User=;Password=;TrustServerCertificate=True");
+            //buraya kendi veritabanı bağlantı bilgilerinizi yazacaksınız.
         }
         public DbSet<About> Abouts { get; set; }
         public DbSet<Booking> Bookings { get; set; }
